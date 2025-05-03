@@ -9,18 +9,18 @@
   </style>
 </head>
 <body>
-  <h1>Text Classifier</h1>
+  <h1>Appendicitis Diagnosis</h1>
   <img src="https://via.placeholder.com/200" alt="Header Image"/><br><br>
   <textarea id="inputText" placeholder="Enter your text here..."></textarea><br><br>
-  <button onclick="sendText()">Predict</button>
-  <h2>Prediction: <span id="prediction"></span></h2>
+  <button onclick="sendText()">Diagnose</button>
+  <h2>Diagnosis: <span id="prediction"></span></h2>
   <h2>Confidence: <span id="confidence"></span>%</h2>
 
   <script>
     async function sendText() {
       const text = document.getElementById('inputText').value;
 
-      const response = await fetch('http://localhost:6016/classify', {
+      const response = await fetch('http://localhost:6016/diagnose', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ text })
