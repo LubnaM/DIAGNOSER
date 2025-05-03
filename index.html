@@ -28,7 +28,8 @@
     const response = await fetch("https://api-inference.huggingface.co/models/Lubna1/diagnoser_v1", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Wait-For-Model": "true"  // 👈 Forces Hugging Face to load the model
       },
       body: JSON.stringify({ inputs: input })
     });
