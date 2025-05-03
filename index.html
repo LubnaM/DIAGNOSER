@@ -14,21 +14,32 @@
   <textarea id="inputText" placeholder="Enter your text here..."></textarea><br><br>
   <button onclick="sendText()">Diagnose</button>
   <h2>Diagnosis: <span id="prediction"></span></h2>
-  <h2>Confidence: <span id="confidence"></span>%</h2>
+  <h2>Confidence: <span id="confidence"></span></h2>
 
   <script>
     async function sendText() {
-      const text = document.getElementById('inputText').value;
+      const input = document.getElementById("inputText").value;
 
-      const response = await fetch('http://localhost:6016/diagnose', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ text })
+      const response = await fetch("https://api-inference.huggingface.co/models/Lubna1/diagnoser_v1", {
+        method: "POST",
+        headers: {
+          "Authorization": "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",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ inputs: input })
       });
 
       const data = await response.json();
-      document.getElementById('prediction').textContent = data.prediction;
-      document.getElementById('confidence').textContent = data.confidence;
+
+      if (data.error) {
+        document.getElementById("prediction").textContent = "Error: " + data.error;
+        document.getElementById("confidence").textContent = "--";
+      } else {
+        // For text generation:
+        const resultText = data[0]?.generated_text || JSON.stringify(data);
+        document.getElementById("prediction").textContent = resultText;
+        document.getElementById("confidence").textContent = "--";
+      }
     }
   </script>
 </body>
