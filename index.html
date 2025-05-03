@@ -31,7 +31,9 @@
 
       const data = await response.json();
       // 🔍 Log the full model response to browser console
-      console.log("Model response:", data);
+      // Log the raw response from Hugging Face API
+      console.log("Response Status:", response.status);
+      console.log("Model Response Data:", data);
       if (data.error) {
         document.getElementById("prediction").textContent = "Error: " + data.error;
         document.getElementById("confidence").textContent = "--";
