@@ -15,7 +15,7 @@ async function diagnose() {
       {
         method: "POST",
         headers: {
-          "Authorization": "Bearer YOUR_HF_TOKEN_HERE", // Replace with your token
+          "Authorization": "Bearer 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", // Replace with your token
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ inputs: text })
