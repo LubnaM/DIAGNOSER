@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Diagnoser</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin-top: 50px; }
+    textarea { width: 300px; height: 100px; }
+    .result { font-weight: bold; margin-top: 20px; }
+    .confidence { color: green; }
+  </style>
+</head>
+<body>
+  <h1>AI Diagnoser</h1>
+  <textarea id="textInput" placeholder="Enter patient symptoms..."></textarea><br><br>
+  <button onclick="diagnose()">Diagnose</button>
+
+  <div class="result">
+    <p>Diagnosis: <span id="diagnosis">-</span></p>
+    <p>Confidence: <span id="confidence" class="confidence">-</span></p>
+  </div>
+
+  <script>
+    async function diagnose() {
+      const text = document.getElementById("textInput").value;
+
+      const response = await fetch("http://localhost:5000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: text })
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        document.getElementById("diagnosis").textContent = "Error";
+        document.getElementById("confidence").textContent = data.error;
+      } else {
+        document.getElementById("diagnosis").textContent = data.diagnosis;
+        document.getElementById("confidence").textContent = data.confidence + "%";
+      }
+    }
+  </script>
+</body>
+</html>
