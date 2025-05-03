@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS  # ✅ Add this
 from transformers import pipeline
+import os
 
 app = Flask(__name__)
-CORS(app)  # ✅ Allows CORS from anywhere (for testing/deployment)
+CORS(app, origins=["https://lubnam.github.io"])  # ✅ Restrict to your GitHub Pages domain
 
 classifier = pipeline("text-classification", model="Lubna1/diagnoser_v1", tokenizer="Lubna1/diagnoser_v1")
 
@@ -16,7 +17,6 @@ def predict():
         result = classifier(input_text)[0]
         label = result['label']
         score = result['score']
-
         diagnosis = "Appendicitis" if label == "LABEL_1" else "Other Abdominal Disease"
 
         return jsonify({
@@ -28,5 +28,5 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Use Render's PORT or default to 5000
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
