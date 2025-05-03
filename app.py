@@ -1,14 +1,10 @@
-#This endpoint (app.py, acting as Flask server) will respond to POST /predict with a JSON #diagnosis.
-
 from flask import Flask, request, jsonify
-from transformers import pipeline
 from flask_cors import CORS
-
+from transformers import pipeline
 
 app = Flask(__name__)
-CORS(app)  # This allows all domains by default
+CORS(app)  # ✅ Allows CORS from anywhere (for testing/deployment)
 
-# Load the model once when the app starts
 classifier = pipeline("text-classification", model="Lubna1/diagnoser_v1", tokenizer="Lubna1/diagnoser_v1")
 
 @app.route("/predict", methods=["POST"])
@@ -18,10 +14,9 @@ def predict():
 
     try:
         result = classifier(input_text)[0]
-        label = result['label']  # e.g., LABEL_1 or LABEL_0
+        label = result['label']
         score = result['score']
 
-        # Map label to diagnosis
         diagnosis = "Appendicitis" if label == "LABEL_1" else "Other Abdominal Disease"
 
         return jsonify({
@@ -33,4 +28,4 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
