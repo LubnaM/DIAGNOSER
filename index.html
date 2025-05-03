@@ -30,15 +30,19 @@
       });
 
       const data = await response.json();
-
+      // 🔍 Log the full model response to browser console
+      console.log("Model response:", data);
       if (data.error) {
         document.getElementById("prediction").textContent = "Error: " + data.error;
         document.getElementById("confidence").textContent = "--";
       } else {
-        // For text generation:
-        const resultText = data[0]?.generated_text || JSON.stringify(data);
-        document.getElementById("prediction").textContent = resultText;
-        document.getElementById("confidence").textContent = "--";
+      // HF returns a list of label-probability objects for classification
+      const labelData = data[0]; // example: [{label: 'LABEL_1', score: 0.91}, ...]
+      const label = labelData.label === 'LABEL_1' ? 'Appendicitis' : 'Other Abdominal Disease';
+      const confidence = (labelData.score * 100).toFixed(2);
+
+      document.getElementById("prediction").textContent = label;
+      document.getElementById("confidence").textContent = confidence;
       }
     }
   </script>
