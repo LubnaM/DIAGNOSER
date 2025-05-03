@@ -1,0 +1,18 @@
+✅ How to Test Properly
+Start Flask:
+
+bash :
+python app.py
+I
+Open any browser > rightclick > inspect> console, and paste the below (put allow paste) >
+fetch("http://127.0.0.1:5000/predict", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ text: "Patient has pain in lower right abdomen" })
+})
+.then(res => res.json())
+.then(data => console.log("Response:", data))
+.catch(err => console.error("Error:", err));
+
+✅ This should return something like:
+{ diagnosis: "Appendicitis", confidence: 93.4 }
