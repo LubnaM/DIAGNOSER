@@ -2,8 +2,11 @@
 
 from flask import Flask, request, jsonify
 from transformers import pipeline
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)  # This allows all domains by default
 
 # Load the model once when the app starts
 classifier = pipeline("text-classification", model="Lubna1/diagnoser_v1", tokenizer="Lubna1/diagnoser_v1")
