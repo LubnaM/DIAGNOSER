@@ -3,24 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>AI Diagnoser (Appendicitis)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --primary: #2a7de1;
+      --primary-hover: #1a5fb4;
+      --bg: #f9fafa;
+      --text: #2b2b2b;
+      --border: #dce1e7;
+      --card-bg: #ffffff;
+      --success: #28a745;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #fff0f6;
-      color: #4a4a4a;
+      background: var(--bg);
+      color: var(--text);
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      height: 100vh;
-      margin: 0;
-      padding: 20px;
+      padding: 30px 20px;
+      min-height: 100vh;
     }
 
     h1 {
       margin-bottom: 20px;
-      color: #d63384;
-      font-size: 2em;
+      color: var(--primary);
+      font-size: 1.8rem;
+      text-align: center;
     }
 
     textarea {
@@ -29,56 +45,57 @@
       height: 120px;
       padding: 12px;
       font-size: 16px;
-      border: 1px solid #f3c2d3;
-      border-radius: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      margin-bottom: 15px;
       resize: vertical;
-      background-color: #fff8fc;
-      box-shadow: 0 2px 8px rgba(214, 51, 132, 0.1);
     }
 
     button {
-      margin-top: 15px;
-      padding: 10px 25px;
+      padding: 10px 24px;
       font-size: 16px;
-      background-color: #e699b3;
+      background-color: var(--primary);
       color: #fff;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      box-shadow: 0 2px 8px rgba(42, 125, 225, 0.2);
     }
 
     button:hover {
-      background-color: #d45d91;
+      background-color: var(--primary-hover);
     }
 
     .result {
-      margin-top: 30px;
-      background: #fff;
+      margin-top: 25px;
+      background: var(--card-bg);
       padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       max-width: 500px;
       width: 100%;
     }
 
     .result p {
       margin: 10px 0;
-      font-size: 18px;
+      font-size: 16px;
     }
 
     .confidence {
-      color: #bf4080;
-      font-weight: bold;
+      color: var(--success);
+      font-weight: 600;
     }
 
     @media (max-width: 600px) {
-      textarea {
-        width: 90%;
+      h1 {
+        font-size: 1.5rem;
       }
 
-      .result {
-        width: 90%;
+      textarea, .result {
+        width: 100%;
       }
     }
   </style>
@@ -86,7 +103,6 @@
 <body>
   <h1>AI Diagnoser</h1>
   <textarea id="textInput" placeholder="Enter patient symptoms..."></textarea>
-  <br>
   <button onclick="diagnose()">Diagnose</button>
 
   <div class="result">
@@ -113,13 +129,8 @@
       const data = await response.json();
       console.log("Model response:", data);
 
-      if (data.error) {
-        document.getElementById("diagnosis").textContent = "Error";
-        document.getElementById("confidence").textContent = data.error;
-      } else {
-        document.getElementById("diagnosis").textContent = data.diagnosis;
-        document.getElementById("confidence").textContent = data.confidence + "%";
-      }
+      document.getElementById("diagnosis").textContent = data.error ? "Error" : data.diagnosis;
+      document.getElementById("confidence").textContent = data.error ? data.error : data.confidence + "%";
     }
   </script>
 </body>
