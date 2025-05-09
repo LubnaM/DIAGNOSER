@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Diagnoser ( Appendicitis ) </title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f7f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 500px;
+      height: 120px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      resize: vertical;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 25px;
+      font-size: 16px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .result {
+      margin-top: 30px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .result p {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .confidence {
+      color: #27ae60;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      textarea {
+        width: 90%;
+      }
+
+      .result {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>AI Diagnoser</h1>
+  <textarea id="textInput" placeholder="Enter patient symptoms..."></textarea>
+  <br>
+  <button onclick="diagnose()">Diagnose</button>
+
+  <div class="result">
+    <p>Diagnosis: <span id="diagnosis">-</span></p>
+    <p>Confidence: <span id="confidence" class="confidence">-</span></p>
+  </div>
+
+  <script>
+    // Dynamically change the API base URL based on environment
+    const apiBaseUrl = location.hostname === "localhost" || location.hostname === "127.0.0.1"
+      ? "http://127.0.0.1:5000/predict"  // Local URL
+      : "https://your-render-app.onrender.com/predict"; // Replace with your actual Render URL
+
+    async function diagnose() {
+      const text = document.getElementById("textInput").value;
+
+      const response = await fetch(apiBaseUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text })
+      });
+
+      const data = await response.json();
+      console.log("Model response:", data);
+
+      if (data.error) {
+        document.getElementById("diagnosis").textContent = "Error";
+        document.getElementById("confidence").textContent = data.error;
+      } else {
+        document.getElementById("diagnosis").textContent = data.diagnosis;
+        document.getElementById("confidence").textContent = data.confidence + "%";
+      }
+    }
+  </script>
+</body>
+</html>
