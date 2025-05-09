@@ -29,7 +29,7 @@ def predict():
 
         return jsonify({
             "diagnosis": diagnosis,
-            "confidence": round(score * 100, 2)
+            "confidence": round((score * 100)-4, 2)
         })
 
     except Exception as e:
