@@ -1,12 +1,20 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS  # ✅ Add this
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 from transformers import pipeline
 import os
 
 app = Flask(__name__)
-CORS(app, origins=["https://lubnam.github.io"])  # ✅ Restrict to your GitHub Pages domain
 
+# Allow CORS for both local and GitHub Pages
+CORS(app, origins=["http://127.0.0.1:5000", "http://localhost:5000", "https://lubnam.github.io"])
+
+# Load the Hugging Face model
 classifier = pipeline("text-classification", model="Lubna1/diagnoser_v1", tokenizer="Lubna1/diagnoser_v1")
+
+@app.route("/")
+def home():
+    # Serve the index.html page when the root route is accessed
+    return render_template("index.html")  # Make sure index.html is inside a 'templates' folder
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -17,7 +25,7 @@ def predict():
         result = classifier(input_text)[0]
         label = result['label']
         score = result['score']
-        diagnosis = "Appendicitis" if label == "Label_1" else "Other Abdominal Disease"
+        diagnosis = "Appendicitis" if label == "LABEL_0" else "Other Abdominal Disease"
 
         return jsonify({
             "diagnosis": diagnosis,
