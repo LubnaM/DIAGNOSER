@@ -27,7 +27,7 @@ def predict():
         label = result['label']
         score = result['score']
         # Adjust diagnosis based on label (ensure this matches your model's labels)
-        if label == 'appendicitis':
+        if label.lower() == 'appendicitis':
             diagnosis = "Appendicitis"
         else:
             diagnosis = "Other Abdominal Disease"
