@@ -23,6 +23,7 @@ def predict():
 
     try:
         result = classifier(input_text)[0]
+        print(result)
         label = result['label']
         score = result['score']
         diagnosis = "Appendicitis" if label == 0 else "Other Abdominal Disease"
