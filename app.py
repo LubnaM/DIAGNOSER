@@ -27,7 +27,7 @@ def predict():
         label = result['label']
         score = result['score']
         # Adjust diagnosis based on label (ensure this matches your model's labels)
-        diagnosis = result['label'] if label == 'LABEL_1' else result['label']
+        diagnosis = "Other Abdominal Disease" if label == 'LABEL_0' else "Appendicitis"
 
         return jsonify({
             "diagnosis": diagnosis,
