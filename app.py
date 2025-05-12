@@ -26,7 +26,7 @@ def predict():
         print(result)
         label = result['label']
         score = result['score']
-        diagnosis = "Appendicitis" if label == 0 else "Other Abdominal Disease"
+        diagnosis = "Appendicitis" if label == 1 else "Other Abdominal Disease"
 
         return jsonify({
             "diagnosis": diagnosis,
