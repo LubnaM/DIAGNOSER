@@ -128,7 +128,7 @@
 
       const data = await response.json();
       console.log("Model response:", data);
-
+      console.log("Model response:", data.diagnosis);
       document.getElementById("diagnosis").textContent = data.error ? "Error" : data.diagnosis;
       document.getElementById("confidence").textContent = data.error ? data.error : data.confidence + "%";
     }
