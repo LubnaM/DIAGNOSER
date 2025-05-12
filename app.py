@@ -25,7 +25,7 @@ def predict():
         result = classifier(input_text)[0]
         label = result['label']
         score = result['score']
-        diagnosis = "Other Abdominal Disease" if label == "LABEL_1" else "Appendicitis"
+        diagnosis = "Appendicitis" if label == "LABEL_1" else "Other Abdominal Disease"
 
         return jsonify({
             "diagnosis": diagnosis,
